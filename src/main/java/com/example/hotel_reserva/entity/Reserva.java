@@ -3,6 +3,7 @@ package com.example.hotel_reserva.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import com.example.hotel_reserva.entity.StatusReserva;
 
 import java.time.LocalDate;
 
@@ -28,5 +29,9 @@ public class Reserva {
     @ManyToOne
     @JoinColumn(name = "hospede_id", nullable = false)
     private Hospede hospede;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusReserva status;
 }
 

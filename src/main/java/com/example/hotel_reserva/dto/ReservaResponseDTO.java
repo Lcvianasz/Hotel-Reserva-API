@@ -21,4 +21,5 @@ public class ReservaResponseDTO {
 
     private String numeroQuarto;
     private String tipoQuarto;
+    private String status;
 }

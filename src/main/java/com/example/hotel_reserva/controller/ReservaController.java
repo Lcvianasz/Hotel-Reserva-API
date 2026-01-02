@@ -1,7 +1,11 @@
 package com.example.hotel_reserva.controller;
 
+import com.example.hotel_reserva.dto.AtualizarStatusReservaDTO;
+import com.example.hotel_reserva.dto.ReservaRequestDTO;
 import com.example.hotel_reserva.entity.Reserva;
 import com.example.hotel_reserva.service.ReservaService;
+import com.example.hotel_reserva.dto.ReservaResponseDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,29 +19,32 @@ public class ReservaController {
     private final ReservaService reservaService;
 
     @PostMapping
-    public ResponseEntity<Reserva> criar(@RequestBody Reserva reserva){
-        return ResponseEntity.ok(reservaService.salvar(reserva));
+    public ResponseEntity<ReservaResponseDTO> criar(@RequestBody @Valid ReservaRequestDTO dto){
+        return ResponseEntity.ok(reservaService.salvar(dto));
     }
     @GetMapping
-    public ResponseEntity<List<Reserva>> listar(){
-        return ResponseEntity.ok(reservaService.listarTodos());
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<Reserva> buscar(@PathVariable Long id){
-        return ResponseEntity.ok(reservaService.buscarPorId(id));
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Reserva> atualizar(
-            @PathVariable Long id,
-            @RequestBody Reserva reserva){
+    public ResponseEntity<List<ReservaResponseDTO>> listar(){
 
-        reserva.setId(id);
-        return ResponseEntity.ok(reservaService.salvar(reserva));
+        return ResponseEntity.ok(reservaService.listarDTO());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReservaResponseDTO> buscar(@PathVariable Long id){
+        return ResponseEntity.ok(reservaService.buscarPorDto(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         reservaService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ReservaResponseDTO> atualizarStatus(
+            @PathVariable Long id,
+            @RequestBody AtualizarStatusReservaDTO dto) {
+        return ResponseEntity.ok(
+                reservaService.atualizarStatus(id, dto.getStatus())
+        );
     }
 }
