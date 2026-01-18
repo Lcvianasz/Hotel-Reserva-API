@@ -18,60 +18,71 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErroResponse> handleNotFound(
             ResourceNotFoundException ex,
             HttpServletRequest request
-    ){
-      ErroResponse error = ErroResponse.builder()
-              .timestamp(LocalDateTime.now())
-              .status(HttpStatus.NOT_FOUND.value())
-              .error("Recurso não encontrado")
-              .message(ex.getMessage())
-              .path(request.getRequestURI())
-              .build();
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    ) {
+        ErroResponse error = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error("Recurso não encontrado")
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
+
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErroResponse> handleBusiness(
             BusinessException ex,
             HttpServletRequest request
-    ){
+    ) {
         ErroResponse error = ErroResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND.value())
-                .error("Erro de regra de negocio")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Erro de regra de negócio")
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
+
         return ResponseEntity.badRequest().body(error);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErroResponse> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request){
+    public ResponseEntity<ErroResponse> handleValidation(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request
+    ) {
         String mensagem = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .findFirst()
-                .map(error -> error.getDefaultMessage())
-                .orElse("Erro de validação");
+                .getAllErrors()
+                .get(0)
+                .getDefaultMessage();
+
         ErroResponse error = ErroResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND.value())
-                .error("Error de validação")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Erro de validação")
                 .message(mensagem)
                 .path(request.getRequestURI())
                 .build();
+
         return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(Exception.class)
-    public ErroResponse handleException(Exception ex, HttpServletRequest request){
-        ErroResponse erro = ErroResponse.builder()
+    public ResponseEntity<ErroResponse> handleGeneric(
+            Exception ex,
+            HttpServletRequest request
+    ) {
+        ErroResponse error = ErroResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND.value())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error("Erro interno")
-                .message("Error inesperado no servidor")
+                .message("Erro inesperado no servidor")
                 .path(request.getRequestURI())
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro).getBody();
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(error);
     }
-
-
-
 }
+

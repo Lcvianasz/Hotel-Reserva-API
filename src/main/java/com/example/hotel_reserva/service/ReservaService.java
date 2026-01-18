@@ -13,7 +13,10 @@ import com.example.hotel_reserva.repository.QuartoRepository;
 import com.example.hotel_reserva.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -101,5 +104,9 @@ public class ReservaService {
         reserva.setStatus(StatusReserva.valueOf(novoStatus.toUpperCase()));
         Reserva salva = reservaRepository.save(reserva);
         return toResponseDTO(salva);
+    }
+    public Page<ReservaResponseDTO> listar(int page, int size) {
+        return reservaRepository.findAll(PageRequest.of(page, size))
+                .map(this::toResponseDTO);
     }
 }
