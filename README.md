@@ -213,6 +213,96 @@ Testes automatizados
 
 Documentação com Swagger/OpenAPI
 
+
+🆕 Atualizações Recentes
+
+Nesta versão, a aplicação passou por uma evolução significativa, focando em boas práticas, qualidade de código e experiência de uso da API.
+
+✨ Principais melhorias
+📦 Uso de DTOs
+
+Implementação de DTOs de Request e Response para a entidade Reserva
+
+Separação clara entre:
+
+Modelo de domínio (Entities)
+
+Contratos da API (DTOs)
+
+Maior segurança e controle sobre os dados expostos
+
+🔄 Atualização de Status da Reserva
+
+Criação de endpoint específico para atualizar o status da reserva
+
+Uso de Enum para garantir valores válidos
+
+Facilita o controle do ciclo de vida da reserva (CRIADA, CONFIRMADA, CANCELADA, etc.)
+
+⚠️ Tratamento Global de Exceções
+
+Implementação de um GlobalExceptionHandler
+
+Padronização das respostas de erro da API
+
+Tratamento para:
+
+Recurso não encontrado
+
+Regras de negócio
+
+Erros de validação
+
+Erros inesperados
+
+Retorno de erros com estrutura clara e consistente
+
+📄 Paginação
+
+Implementação de paginação no endpoint de listagem de reservas
+
+Suporte aos parâmetros:
+
+page
+
+size
+
+Melhora desempenho e escalabilidade da API
+
+📚 Documentação com Swagger (OpenAPI)
+
+Integração com Springdoc OpenAPI
+
+Interface gráfica para testar os endpoints
+
+Facilita o entendimento e consumo da API
+
+🔐 Boas Práticas de Configuração
+
+Remoção de credenciais sensíveis do repositório
+
+Uso de application.properties seguro para versionamento
+
+Suporte a configurações locais via application-local.properties
+
+🏗️ Estrutura do Projeto
+
+Organização em camadas:
+
+Controller
+
+Service
+
+Repository
+
+DTO
+
+Exception
+
+Código mais limpo, legível e manutenível
+
+📌 Essas melhorias tornam a aplicação mais robusta, segura e preparada para ambientes reais de produção.
+
 👨‍💻 Autor
 
 Lucas Viana Souza
