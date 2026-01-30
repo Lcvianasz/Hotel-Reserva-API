@@ -308,3 +308,17 @@ Código mais limpo, legível e manutenível
 Lucas Viana Souza
 Estudante de Análise e Desenvolvimento de Sistemas
 Projeto desenvolvido para fins educacionais e práticos.
+
+## 🧪 Testes Automatizados
+
+O projeto possui testes unitários utilizando **JUnit 5** e **Mockito**, focados na camada de serviço.
+
+### Tipos de testes implementados:
+- Validação de regras de negócio da Reserva
+- Testes isolados sem dependência de banco de dados
+- Simulação de repositórios com Mockito
+
+### Executar os testes:
+```bash
+mvn test
+
